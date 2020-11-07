@@ -29,31 +29,32 @@ namespace ConsoleUI
                 return;
             }
 
-            var changes = Logic.FileOperations.GetDiff(path1, path2);
+            var model = new Model.Model(path1, path2);
+            var changes = model.ChangeBlocks;
 
             foreach (var changeBlock in changes)
                 Print(changeBlock);
         }
 
-        private static void Print(Logic.ChangeBlock changeBlock)
+        private static void Print(Model.ChangeBlock changeBlock)
         {
             const ConsoleColor insColor = ConsoleColor.Green;
             const ConsoleColor delColor = ConsoleColor.Red;
 
             var prevColor = Console.ForegroundColor;
 
-            Console.WriteLine("Line " + (changeBlock.StartPos + 1) + ":");
+            Console.WriteLine($"Line {changeBlock.StartPos + 1}:");
 
             Console.ForegroundColor = delColor;
             foreach (var del in changeBlock.Delete)
             {
-                Console.WriteLine("-   " + del);
+                Console.WriteLine($"-   {del}");
             }
 
             Console.ForegroundColor = insColor;
             foreach (var ins in changeBlock.Insert)
             {
-                Console.WriteLine("+   " + ins);
+                Console.WriteLine($"+   {ins}");
             }
 
             Console.WriteLine();
