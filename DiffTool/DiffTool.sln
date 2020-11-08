@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Test", "Logic.Test\Lo
 		{E1A1F94D-40D5-4C75-A7FE-5D87299CADC3} = {E1A1F94D-40D5-4C75-A7FE-5D87299CADC3}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfGuiView", "WpfGuiView\WpfGuiView.csproj", "{FC41F61B-C082-48EB-BDC1-185F8FF8D300}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{B76DB82B-6228-4BC7-8A36-0848B1621D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B76DB82B-6228-4BC7-8A36-0848B1621D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B76DB82B-6228-4BC7-8A36-0848B1621D78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC41F61B-C082-48EB-BDC1-185F8FF8D300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC41F61B-C082-48EB-BDC1-185F8FF8D300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC41F61B-C082-48EB-BDC1-185F8FF8D300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC41F61B-C082-48EB-BDC1-185F8FF8D300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
