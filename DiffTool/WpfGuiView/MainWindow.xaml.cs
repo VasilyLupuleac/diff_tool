@@ -23,6 +23,7 @@ namespace WpfGuiView
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModel.ApplicationViewModel(new DialogService(), new DialogService());
         }
 
         private void Button1Click(object sender, RoutedEventArgs e)
@@ -34,6 +35,7 @@ namespace WpfGuiView
             if (result == true)
                 file1.Text = dlg.FileName;
         }
+
         private void Button2Click(object sender, RoutedEventArgs e)
         {
             var dlg = new Microsoft.Win32.OpenFileDialog();

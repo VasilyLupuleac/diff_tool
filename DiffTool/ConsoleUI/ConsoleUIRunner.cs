@@ -29,7 +29,7 @@ namespace ConsoleUI
                 return;
             }
 
-            var model = new Model.Model(path1, path2);
+            var model = new Model.FileDifferenceModel(path1, path2);
             var changes = model.ChangeBlocks;
 
             foreach (var changeBlock in changes)
@@ -43,7 +43,7 @@ namespace ConsoleUI
 
             var prevColor = Console.ForegroundColor;
 
-            Console.WriteLine($"Line {changeBlock.StartPos + 1}:");
+            Console.WriteLine($"Line {changeBlock.StartPos2 + 1}:");
 
             Console.ForegroundColor = delColor;
             foreach (var del in changeBlock.Delete)

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.IO;
 using System.Linq;
 using Logic;
@@ -6,17 +8,52 @@ using Logic;
 
 namespace Model
 {
-    public class Model
+    public class FileDifferenceModel : INotifyPropertyChanged
     {
         private static void Main()
         {
         }
-        public List<ChangeBlock> ChangeBlocks { get; }
 
-        public Model(string path1, string path2)
+        private string _path1;
+        private string _path2;
+        public string Path1
         {
-            var lcs = FileOperations.GetLCS(path1, path2);
-            ChangeBlocks = LcsToChangeBlocks(path1, path2, lcs);
+            get => _path1;
+            set
+            {
+                _path1 = value;
+                CalculateDifference();
+            }
+        }
+        public string Path2 {
+            get => _path2;
+            set
+            {
+                _path2 = value;
+                CalculateDifference();
+            }
+        }
+
+        public List<ChangeBlock> ChangeBlocks { get; private set; }
+
+
+        public void CalculateDifference()
+        {
+            if (_path1 is null || _path2 is null)
+                ChangeBlocks = new List<ChangeBlock>();
+            else
+            {
+                var lcs = FileOperations.GetLCS(_path1, _path2);
+                ChangeBlocks = LcsToChangeBlocks(_path1, _path2, lcs);
+            }
+            OnPropertyChanged("ChangeBlocks");
+        }
+
+        public FileDifferenceModel(string path1=null, string path2=null)
+        {
+            _path1 = path1;
+            _path2 = path2;
+            CalculateDifference();
         }
 
         public static List<ChangeBlock> LcsToChangeBlocks(string path1, string path2, IEnumerable<FileOperations.Pos> lcs)
@@ -46,6 +83,13 @@ namespace Model
                     }
 
             return changeBlocks;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

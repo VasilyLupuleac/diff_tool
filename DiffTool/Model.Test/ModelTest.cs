@@ -32,13 +32,13 @@ namespace Model.Test
 
             File.WriteAllLines(path1, lines123);
             File.WriteAllLines(path2, lines125);
-            var model12 = new Model(path1, path2);
+            var model12 = new FileDifferenceModel(path1, path2);
             var changeBlocks12 = model12.ChangeBlocks;
             Assert.AreEqual(changeBlocks12.Count, 1);
             Assert.AreEqual(changeBlocks12[0].Delete, new[] { "3" });
             Assert.AreEqual(changeBlocks12[0].Insert, new[] { "5" });
-            Assert.AreEqual(changeBlocks12[0].StartPos, 2);
-            Assert.AreEqual(changeBlocks12[0].EndPos, 2);
+            Assert.AreEqual(changeBlocks12[0].StartPos2, 2);
+            Assert.AreEqual(changeBlocks12[0].EndPos2, 2);
 
 
             var lines1 = new[]
@@ -82,7 +82,7 @@ namespace Model.Test
 
             File.WriteAllLines(path1, lines1);
             File.WriteAllLines(path2, lines2);
-            var model = new Model(path1, path2);
+            var model = new FileDifferenceModel(path1, path2);
             var changeBlocks = model.ChangeBlocks;
             Assert.AreEqual(changeBlocks.Count, 4);
             Assert.Zero(changeBlocks[0].Delete.Length);
