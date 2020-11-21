@@ -23,6 +23,12 @@ namespace Logic
             }
         }
 
+        /// <summary>
+        /// Calculate the longest common subsequence of the contents of two files
+        /// </summary>
+        /// <param name="path1"> Path to the first file </param>
+        /// <param name="path2"> Path to the first file </param>
+        /// <returns>  Longest common subsequence as a collection of pairs of positions </returns>
         public static Pos[] GetLCS(string path1, string path2)
         {
             var len1 = File.ReadLines(path1).Count(); // ReadLines() is lazy so it doesn't load the contents into memory

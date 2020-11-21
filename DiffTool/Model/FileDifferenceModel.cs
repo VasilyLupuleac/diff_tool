@@ -8,54 +8,38 @@ using Logic;
 
 namespace Model
 {
-    public class FileDifferenceModel : INotifyPropertyChanged
+    public class FileDifferenceModel
     {
         private static void Main()
         {
         }
 
-        private string _path1;
-        private string _path2;
-        public string Path1
-        {
-            get => _path1;
-            set
-            {
-                _path1 = value;
-                CalculateDifference();
-            }
-        }
-        public string Path2 {
-            get => _path2;
-            set
-            {
-                _path2 = value;
-                CalculateDifference();
-            }
-        }
+        public string Path1 { get; set; }
+        public string Path2 { get; set; }
 
         public List<ChangeBlock> ChangeBlocks { get; private set; }
 
 
         public void CalculateDifference()
         {
-            if (_path1 is null || _path2 is null)
-                ChangeBlocks = new List<ChangeBlock>();
-            else
-            {
-                var lcs = FileOperations.GetLCS(_path1, _path2);
-                ChangeBlocks = LcsToChangeBlocks(_path1, _path2, lcs);
-            }
-            OnPropertyChanged("ChangeBlocks");
+            var lcs = FileOperations.GetLCS(Path1, Path2);
+            ChangeBlocks = LcsToChangeBlocks(Path1, Path2, lcs);
         }
 
-        public FileDifferenceModel(string path1=null, string path2=null)
+        public FileDifferenceModel(string path1, string path2)
         {
-            _path1 = path1;
-            _path2 = path2;
+            Path1 = path1;
+            Path2 = path2;
             CalculateDifference();
         }
 
+        /// <summary>
+        /// Construct Change blocks using pre-calculated longest common subsequence
+        /// </summary>
+        /// <param name="path1"> Path to the first file </param>
+        /// <param name="path2"> Path to the first file </param>
+        /// <param name="lcs"> Longest common subsequence as a collection of pairs of positions </param>
+        /// <returns> List of blocks of changes </returns>
         public static List<ChangeBlock> LcsToChangeBlocks(string path1, string path2, IEnumerable<FileOperations.Pos> lcs)
         {
             var len1 = File.ReadLines(path1).Count();
@@ -75,21 +59,16 @@ namespace Model
                         end2 = pos.Pos2;
                         if (end1 - start1 > 1 || end2 - start2 > 1)  // Equal lines are not consecutive so there are changes between them
                             changeBlocks.Add(new ChangeBlock(
+                                start1 + 1,
+                                end1,
                                 start2 + 1,
-                                end2 - 1,
+                                end2,
                                 lines1.LineRange(start1 + 1, end1),
                                 lines2.LineRange(start2 + 1, end2)
                             ));
                     }
 
             return changeBlocks;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

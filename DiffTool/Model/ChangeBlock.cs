@@ -2,15 +2,19 @@
 {
     public class ChangeBlock
     {
-        public int StartPos2; // Position in the second (changed) file
-        public int EndPos2; //
+        public int StartPos1;
+        public int EndPos1;
+        public int StartPos2;
+        public int EndPos2;
         public string[] Delete;
         public string[] Insert;
 
-        public ChangeBlock(int start, int end, string[] del, string[] ins)
+        public ChangeBlock(int start1, int end1, int start2, int end2, string[] del, string[] ins)
         {
-            StartPos2 = start;
-            EndPos2 = end;
+            StartPos1 = start1;
+            EndPos1 = end1;
+            StartPos2 = start2;
+            EndPos2 = end2;
             Delete = del;
             Insert = ins;
         }

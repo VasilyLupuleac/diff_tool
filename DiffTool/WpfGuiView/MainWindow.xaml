@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfGuiView"
-        xmlns:vm="clr-namespace:WpfGuiView.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
@@ -13,16 +12,35 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" x:Name="info"  Width="Auto" Height="50" Text="Please select files" FontSize="30"/>
-        <TextBox Grid.Column="1" Grid.Row="1" x:Name="file1" Width="Auto" Height="30"/>
-        <TextBox Grid.Column="2" Grid.Row="1" x:Name="file2"  Width="Auto" Height="30"/>
-        <Button Grid.Column="1" Grid.Row="0" x:Name="button1"  Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Grid.Column="2" Grid.Row="0" x:Name="button2"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <ListView Grid.Column="6" Grid.Row="3" Margin="20" Grid.ColumnSpan="2" Grid.RowSpan="5"
+                 ItemsSource="{Binding ChangeBlocks,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                 SelectedItem="{Binding SelectedChangeBlock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+
+        </ListView>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Deleted" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="26"/>
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="Inserted" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="26"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Path=SelectedChangeBlock.Delete}" Background="PaleVioletRed" Grid.ColumnSpan="3" Grid.RowSpan="5"/>
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Path=SelectedChangeBlock.Insert}"  Background="LightGreen"  Grid.ColumnSpan="3" Grid.RowSpan="5"/>
+        <Button Grid.Column="6" Grid.Row="0" x:Name="calculate"  Width="160" Height="Auto" Command="{Binding CalculateDifferenceCommand}" Content="Show diff" FontSize ="15" Grid.ColumnSpan="2"/>
+        <Button Grid.Column="7" Grid.Row="2" x:Name="next" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
+        <Button Grid.Column="6" Grid.Row="2" x:Name="prev" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
+        <Button Grid.Column="0" Grid.Row="0" x:Name="button1"  Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
+        <Button Grid.Column="3" Grid.Row="0" x:Name="button2"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
     </Grid>
 </Window>

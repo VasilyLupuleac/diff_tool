@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -24,10 +25,7 @@ namespace ConsoleUI
             }
 
             if (!File.Exists(path1) || !File.Exists(path2))
-            {
-                Console.WriteLine("File(s) do not exist");
                 return;
-            }
 
             var model = new Model.FileDifferenceModel(path1, path2);
             var changes = model.ChangeBlocks;

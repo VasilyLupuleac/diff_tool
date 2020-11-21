@@ -25,25 +25,5 @@ namespace WpfGuiView
             InitializeComponent();
             DataContext = new ViewModel.ApplicationViewModel(new DialogService(), new DialogService());
         }
-
-        private void Button1Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new Microsoft.Win32.OpenFileDialog();
-
-            var result = dlg.ShowDialog();
-
-            if (result == true)
-                file1.Text = dlg.FileName;
-        }
-
-        private void Button2Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new Microsoft.Win32.OpenFileDialog();
-
-            var result = dlg.ShowDialog();
-
-            if (result == true)
-                file2.Text = dlg.FileName;
-        }
     }
 }
