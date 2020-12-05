@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
 using Logic;
@@ -14,11 +15,13 @@ namespace Model
         {
         }
 
+
         public string Path1 { get; set; }
         public string Path2 { get; set; }
 
         public List<ChangeBlock> ChangeBlocks { get; private set; }
 
+        public readonly bool IsEmpty;
 
         public void CalculateDifference()
         {
@@ -31,14 +34,16 @@ namespace Model
             Path1 = path1;
             Path2 = path2;
             CalculateDifference();
+
+            IsEmpty = ChangeBlocks.Count() == 0;
         }
 
         /// <summary>
-        /// Construct Change blocks using pre-calculated longest common subsequence
+        /// Construct Change blocks using pre-calculated longest common subsequence of lines
         /// </summary>
         /// <param name="path1"> Path to the first file </param>
         /// <param name="path2"> Path to the first file </param>
-        /// <param name="lcs"> Longest common subsequence as a collection of pairs of positions </param>
+        /// <param name="lcs"> Longest common subsequence as a collection of pairs of line numbers </param>
         /// <returns> List of blocks of changes </returns>
         public static List<ChangeBlock> LcsToChangeBlocks(string path1, string path2, IEnumerable<FileOperations.Pos> lcs)
         {
@@ -70,6 +75,48 @@ namespace Model
 
             return changeBlocks;
         }
+
+        public void Save(string filename)
+        {
+            using (var saveFile = new StreamWriter(filename))
+            {
+                saveFile.WriteLine(Path1);
+                saveFile.WriteLine(Path2);
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream1 = File.OpenRead(Path1))
+                        saveFile.WriteLine(md5.ComputeHash(stream1));
+
+                    using (var stream2 = File.OpenRead(Path2))
+                        saveFile.WriteLine(md5.ComputeHash(stream2));
+                }
+                foreach (var changeBlock in ChangeBlocks)
+                    changeBlock.Save(saveFile);
+            }
+            
+        }
+
+        public void Load(string filename)
+        {
+            using (var saveFile = new StreamWriter(filename))
+            {
+                saveFile.WriteLine(Path1);
+                saveFile.WriteLine(Path2);
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream1 = File.OpenRead(Path1))
+                        saveFile.WriteLine(md5.ComputeHash(stream1));
+
+                    using (var stream2 = File.OpenRead(Path2))
+                        saveFile.WriteLine(md5.ComputeHash(stream2));
+                }
+                foreach (var changeBlock in ChangeBlocks)
+                    changeBlock.Save(saveFile);
+
+            }
+
+        }
+
     }
 }
 

@@ -1,12 +1,12 @@
 ﻿using System.Windows;
 public interface IDialogService
 {
-    string OpenFileDialog();
+    string OpenDialog();
 }
 
-public class DialogService : IDialogService
+public class FileDialogService : IDialogService
 {
-    public string OpenFileDialog()
+    public string OpenDialog()
     {
         var dlg = new Microsoft.Win32.OpenFileDialog();
 
@@ -14,6 +14,21 @@ public class DialogService : IDialogService
 
         if (result == true)
             return dlg.FileName;
+
+        return null;
+    }
+}
+
+public class FolderDialogService : IDialogService
+{
+    public string OpenDialog()
+    {
+        var dlg = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+
+        var result = dlg.ShowDialog();
+
+        if (result == true)
+            return dlg.SelectedPath;
 
         return null;
     }

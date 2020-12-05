@@ -23,7 +23,10 @@ namespace WpfGuiView
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ViewModel.ApplicationViewModel(new DialogService(), new DialogService());
+            DataContext = new ViewModel.ViewModel(new FileDialogService(),
+                                                  new FileDialogService(),
+                                                  new FolderDialogService(),
+                                                  new FolderDialogService());
         }
     }
 }

@@ -18,5 +18,30 @@
             Delete = del;
             Insert = ins;
         }
+        public ChangeBlock(System.IO.StreamReader stream)
+        {
+            var positions = stream.ReadLine().Split(' ');
+            StartPos1 = int.Parse(positions[0]);
+            EndPos1 = int.Parse(positions[1]);
+            StartPos2 = int.Parse(positions[2]);
+            EndPos2 = int.Parse(positions[3]);
+
+            Delete = new string[EndPos1 - StartPos1];
+            Insert = new string[EndPos2 - StartPos2];
+
+
+            for (int i = 0; i < StartPos1 - EndPos1; i++)
+                Delete[i] = stream.ReadLine();
+            for (int i = 0; i < StartPos2 - EndPos2; i++)
+                Insert[i] = stream.ReadLine();
+        }
+        public void Save(System.IO.StreamWriter stream)
+        {
+            stream.WriteLine($"{StartPos1} {EndPos1} {StartPos2} {EndPos2}");
+            foreach (var del in Delete)
+                stream.WriteLine(del);
+            foreach (var ins in Insert)
+                stream.WriteLine(ins);
+        }
     }
 }
