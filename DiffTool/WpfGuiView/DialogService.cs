@@ -33,3 +33,19 @@ public class FolderDialogService : IDialogService
         return null;
     }
 }
+
+
+public class SaveFileDialogService : IDialogService
+{
+    public string OpenDialog()
+    {
+        var dlg = new Microsoft.Win32.SaveFileDialog();
+
+        var result = dlg.ShowDialog();
+
+        if (result == true)
+            return dlg.FileName;
+
+        return null;
+    }
+}

@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Model.Test
 {
     [TestFixture]
-    public class TestFileOperations
+    public class FileDifferenceModelTest
     {
         [Test]
         public void TestGetChangeBlocksGeneral()
@@ -38,7 +38,7 @@ namespace Model.Test
             Assert.AreEqual(changeBlocks12[0].Delete, new[] { "3" });
             Assert.AreEqual(changeBlocks12[0].Insert, new[] { "5" });
             Assert.AreEqual(changeBlocks12[0].StartPos2, 2);
-            Assert.AreEqual(changeBlocks12[0].EndPos2, 2);
+            Assert.AreEqual(changeBlocks12[0].EndPos2, 3);
 
 
             var lines1 = new[]
@@ -67,7 +67,9 @@ namespace Model.Test
                 "Line ¹8",
                 "Extra line 1",
                 "Extra line 2",
-                "Final line"
+                "Final line",
+                "Line ¹9",
+                "Line ¹10"
             };
 
             var lcs = new[]
@@ -77,7 +79,9 @@ namespace Model.Test
                 new FileOperations.Pos(3, 3),
                 new FileOperations.Pos(5, 5),
                 new FileOperations.Pos(6, 6),
-                new FileOperations.Pos(7, 7)
+                new FileOperations.Pos(7, 7),
+                new FileOperations.Pos(9, 12)
+
             };
 
             File.WriteAllLines(path1, lines1);
@@ -87,7 +91,7 @@ namespace Model.Test
             Assert.AreEqual(changeBlocks.Count, 4);
             Assert.Zero(changeBlocks[0].Delete.Length);
             Assert.Zero(changeBlocks[1].Insert.Length);
-            Assert.AreEqual(changeBlocks[3].Delete, new[] { "Line ¹9", "Line ¹10" });
+            Assert.AreEqual(changeBlocks[3].Delete, new[] { "Line ¹9"});
             Assert.AreEqual(changeBlocks[2].Delete.Length, 1);
             Assert.AreEqual(changeBlocks[2].Insert.Length, 1);
 

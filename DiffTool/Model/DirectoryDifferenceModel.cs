@@ -21,7 +21,7 @@ namespace Model
         public IEnumerable<string> DeletedFiles { get; private set; }
         public List<string> UnchangedFiles{ get; private set; }
         public List<string> UnchangedDirectories { get; private set; }
-        public string Name => (dir1.Name == dir2.Name) ? dir2.Name : "";
+        public string Name => dir2.Name;
 
         public void CalculateDifference()
         {
@@ -61,7 +61,8 @@ namespace Model
                 var diff = new DirectoryDifferenceModel(Path.Join(Path1, dirName),
                                                         Path.Join(Path2, dirName));
                 if (diff.IsEmpty)
-                    
+                    UnchangedDirectories.Add(dirName);
+                else
                     ChangedDirectories.Add(diff);
             }
         }

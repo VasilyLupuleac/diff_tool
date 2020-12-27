@@ -12,15 +12,18 @@ namespace WpfGuiView.ViewModel
     public class FileViewModel : INotifyPropertyChanged
     {
         private bool _showFiles;
+        private FileParagraphView _paragraphView;
         private FileDifferenceModel _diff;
         private int _selectedIndex;
         private readonly IDialogService _selectFile1;
         private readonly IDialogService _selectFile2;
-        
+        private readonly IDialogService _saveFile;
+
 
         private string _path1;
         private string _path2;
 
+        public FileParagraphView ParagraphView => _paragraphView;
         public string Path1 
         {
             get
@@ -89,6 +92,8 @@ namespace WpfGuiView.ViewModel
 
         public ICommand OpenFileDialog2Command => new RelayCommand(_ => { Path2 = _selectFile2.OpenDialog(); });
 
+        public ICommand SaveFileDialogCommand => new RelayCommand(_ => { _diff.Save(_saveFile.OpenDialog()); });
+
         public ICommand NextCommand => new RelayCommand(_ => 
         {
             if (_diff is null || ChangeBlocks.Count() == 0)
@@ -115,12 +120,24 @@ namespace WpfGuiView.ViewModel
                                                                             OnPropertyChanged("ChangeBlocks");
                                                                             OnPropertyChanged("SelectedChangeBlock");
                                                                         });
-        public FileViewModel(IDialogService dialogService1, IDialogService dialogService2)
+
+        public ICommand CalculateDifferenceAndParagraphsCommand => new RelayCommand(_ =>
+                                                                        {
+                                                                            if (_path1 is null || _path2 is null)
+                                                                                return;
+                                                                            _diff = new FileDifferenceModel(Path1, Path2);
+                                                                            _paragraphView = new FileParagraphView(_diff);
+                                                                            OnPropertyChanged("ChangeBlocks");
+                                                                            OnPropertyChanged("SelectedChangeBlock");
+                                                                            OnPropertyChanged("ParagraphView");
+                                                                        });
+        public FileViewModel(IDialogService dialogService1, IDialogService dialogService2, IDialogService saveDialogService)
         {
             _path1 = null;
             _path2 = null;
             _selectFile1 = dialogService1;
             _selectFile2 = dialogService2;
+            _saveFile = saveDialogService;
             _selectedIndex = 0;
         }
 

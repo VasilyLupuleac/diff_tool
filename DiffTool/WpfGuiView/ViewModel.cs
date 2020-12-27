@@ -9,9 +9,10 @@ namespace WpfGuiView.ViewModel
         public ViewModel(IDialogService fileService1,
                          IDialogService fileService2,
                          IDialogService dirService1,
-                         IDialogService dirService2)
+                         IDialogService dirService2,
+                         IDialogService saveFileService)
         {
-            FileVM = new FileViewModel(fileService1, fileService2);
+            FileVM = new FileViewModel(fileService1, fileService2, saveFileService);
             DirVM = new DirViewModel(dirService1, dirService2);
         }
     }

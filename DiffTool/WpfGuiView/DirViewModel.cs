@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Model;
 using System;
@@ -14,7 +15,7 @@ namespace WpfGuiView.ViewModel
         private DirectoryDifferenceModel _diff;
         private readonly IDialogService _selectDir1;
         private readonly IDialogService _selectDir2;
-        public ObservableCollection<FileTreeNode> Node;
+        public IEnumerable<FileTreeNode> Node { get; private set; }
 
 
         private string _path1;
@@ -59,9 +60,15 @@ namespace WpfGuiView.ViewModel
         {
             if (_path1 is null || _path2 is null)
                 return;
-            _diff = new DirectoryDifferenceModel(Path1, Path2);
-            Node = new ObservableCollection<FileTreeNode>();
-            Node.Add(new FileTreeNode(_diff, null));
+            _diff = new DirectoryDifferenceModel(_path1, _path2);
+
+            using (var log = new StreamWriter("log1.txt"))
+            {
+                log.WriteLine(Path1);
+                log.WriteLine(Path2);
+            }
+            Node = new FileTreeNode[] { new FileTreeNode(_diff, null) };
+            OnPropertyChanged("Node");
             OnPropertyChanged("ChangedFiles");
             OnPropertyChanged("ChangedDirectories");
             OnPropertyChanged("AddedFiles");

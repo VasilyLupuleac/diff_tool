@@ -20,30 +20,31 @@ namespace WpfGuiView.ViewModel
 
 	public class FileTreeNode
 	{
-		public FileTreeNode Parent;
-		public ObservableCollection<FileTreeNode> Children;
-		public string Name;
-		public string Path1;
-		public string Path2;
-		private string _path => Path1 ?? Path2;
-		public readonly NodeType Type;
+		public FileTreeNode Parent { get; private set; }
+		public ObservableCollection<FileTreeNode> Children { get; private set; }
+		public string Name { get; private set; }
+		public string Path1 { get; private set; }
+		public string Path2 { get; private set; }
+		public string ValidPath => Path1 ?? Path2;
+		public NodeType Type { get; private set; }
 
 		private IEnumerable<string> getDirNames()
         {
-			var dir = new DirectoryInfo(_path);
+			var dir = new DirectoryInfo(ValidPath);
 			return dir.EnumerateDirectories().Select(di => di.Name);
-
 		}
 
 		private IEnumerable<string> getFileNames()
 		{
-			var dir = new DirectoryInfo(_path);
+			var dir = new DirectoryInfo(ValidPath);
 			return dir.EnumerateFiles().Select(di => di.Name);
 
 		}
 
 		public FileTreeNode(DirectoryDifferenceModel diff, FileTreeNode parent)
         {
+			Path1 = diff.Path1;
+			Path2 = diff.Path2;
 			Parent = parent;
 			Type = NodeType.ChangedDir;
 			Name = diff.Name;
@@ -58,11 +59,12 @@ namespace WpfGuiView.ViewModel
 			children.AddRange(diff.UnchangedFiles.Select(d => new FileTreeNode(d, this, NodeType.UnchangedFile)));
 			Children = new ObservableCollection<FileTreeNode>(children);
 		}
+
 		public FileTreeNode(FileDifferenceModel diff, FileTreeNode parent)
 		{
 			Path1 = diff.Path1;
 			Path2 = diff.Path2;
-			Name = Path1.Substring(Path1.LastIndexOf('/') + 1);
+			Name = Path1.Substring(Path1.LastIndexOf('\\') + 1);
 			Type = NodeType.ChangedFile;
 			Children = new ObservableCollection<FileTreeNode>();
 		}

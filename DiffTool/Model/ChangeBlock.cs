@@ -1,5 +1,9 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
+    public class ChangeBlockLoadException: Exception { }
+
     public class ChangeBlock
     {
         public int StartPos1;
@@ -21,13 +25,20 @@
         public ChangeBlock(System.IO.StreamReader stream)
         {
             var positions = stream.ReadLine().Split(' ');
-            StartPos1 = int.Parse(positions[0]);
-            EndPos1 = int.Parse(positions[1]);
-            StartPos2 = int.Parse(positions[2]);
-            EndPos2 = int.Parse(positions[3]);
+            try
+            {
+                StartPos1 = int.Parse(positions[0]);
+                EndPos1 = int.Parse(positions[1]);
+                StartPos2 = int.Parse(positions[2]);
+                EndPos2 = int.Parse(positions[3]);
 
-            Delete = new string[EndPos1 - StartPos1];
-            Insert = new string[EndPos2 - StartPos2];
+                Delete = new string[EndPos1 - StartPos1];
+                Insert = new string[EndPos2 - StartPos2];
+            }
+            catch
+            {
+                throw new ChangeBlockLoadException();
+            }
 
 
             for (int i = 0; i < StartPos1 - EndPos1; i++)

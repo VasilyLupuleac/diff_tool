@@ -26,7 +26,8 @@ namespace WpfGuiView
             DataContext = new ViewModel.ViewModel(new FileDialogService(),
                                                   new FileDialogService(),
                                                   new FolderDialogService(),
-                                                  new FolderDialogService());
+                                                  new FolderDialogService(),
+                                                  new SaveFileDialogService());
         }
     }
 }
