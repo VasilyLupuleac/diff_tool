@@ -30,7 +30,7 @@ namespace Logic
         /// <param name="path1"> Path to the first file </param>
         /// <param name="path2"> Path to the first file </param>
         /// <returns>  Longest common subsequence as a collection of pairs of positions </returns>
-        public static Pos[] GetLcs(string path1, string path2, bool useHirschberg=true)
+        public static Pos[] GetLcs(string path1, string path2, bool useHirschberg=false)
         {
             if (useHirschberg)
             {
@@ -49,39 +49,36 @@ namespace Logic
 
         public static Pos[] CalculateLcsWithoutLoading(string path1, string path2)
         {
-            var len1 = File.ReadLines(path1).Count(); // ReadLines() is lazy so it doesn't load the contents into memory
-            var len2 = File.ReadLines(path1).Count();  //
+            string[] lines1 = File.ReadAllLines(path1);
+            string[] lines2 = File.ReadAllLines(path2);
 
+            var len1 = lines1.Length;
+            var len2 = lines2.Length;
             var lcs = new int[len1 + 1, len2 + 1]; // lcs[i, j] is the length of the longest common subsequence of lines1[0..i] and lines2[0..j]
             var prev = new Pos[len1 + 1, len2 + 1]; // Used for restoring the subsequence
 
-            using (var lines1 = new StreamReader(path1))
-                for (var i = 0; i < len1; i++)
+            for (var i = 0; i < len1; i++)
+            {
+                for (var j = 0; j < len2; j++)
                 {
-                    var line1 = lines1.ReadLine();
+                    if (lines1[i] == lines2[j]) // This pair of lines can be included into the LCS
+                    {
+                        lcs[i + 1, j + 1] = lcs[i, j] + 1;
+                        prev[i, j] = new Pos(i - 1, j - 1);
+                    }
 
-                    using (var lines2 = new StreamReader(path2))
-                        for (var j = 0; j < len2; j++)
-                        {
-                            var line2 = lines2.ReadLine();
-                            if (line1 == line2) // This pair of lines can be included into the LCS
-                            {
-                                lcs[i + 1, j + 1] = lcs[i, j] + 1;
-                                prev[i + 1, j + 1] = new Pos(i, j);
-                            }
-
-                            else if (lcs[i + 1, j] > lcs[i, j + 1]) // The current line in the second file is not used in the LCS of this prefix
-                            {
-                                lcs[i + 1, j + 1] = lcs[i + 1, j];
-                                prev[i + 1, j + 1] = new Pos(i + 1, j);
-                            }
-                            else
-                            {
-                                lcs[i + 1, j + 1] = lcs[i, j + 1]; // The current line in the first file is not used in the LCS of this prefix
-                                prev[i + 1, j + 1] = new Pos(i, j + 1);
-                            }
-                        }
+                    else if (lcs[i + 1, j] > lcs[i, j + 1]) // The current line in the second file is not used in the LCS of this prefix
+                    {
+                        lcs[i + 1, j + 1] = lcs[i + 1, j];
+                        prev[i, j] = new Pos(i, j - 1);
+                    }
+                    else
+                    {
+                        lcs[i + 1, j + 1] = lcs[i, j + 1]; // The current line in the first file is not used in the LCS of this prefix
+                        prev[i, j] = new Pos(i - 1, j);
+                    }
                 }
+            }
 
 
 
@@ -89,7 +86,7 @@ namespace Logic
             var lcsSample = new Pos[lcsLength];
 
             var curPos = lcsLength - 1;       // Restoring the subsequence from the end
-            int cur1 = len1, cur2 = len2; //
+            int cur1 = len1 - 1, cur2 = len2 - 1; //
             while (curPos >= 0)
             {
                 var pr = prev[cur1, cur2];
@@ -103,7 +100,6 @@ namespace Logic
 
             return lcsSample;
         }
-
 
         private readonly struct Subarray
         {

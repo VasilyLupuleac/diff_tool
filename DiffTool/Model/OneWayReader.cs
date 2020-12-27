@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Model
 {
@@ -38,6 +39,18 @@ namespace Model
                 range[i] = NextLine();
 
             return range;
+        }
+
+        public string[] ReadToEnd(int start)
+        {
+            while (_position < start)
+                NextLine();
+
+            var range = new List<string>();
+            for (var line = NextLine(); !(line is null); line = NextLine())
+                range.Add(line);
+
+            return range.ToArray();
         }
 
         public void Dispose()
