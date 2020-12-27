@@ -1,4 +1,5 @@
 ﻿<Window x:Class="WpfGuiView.MainWindow"
+        x:Name="mainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -145,11 +146,11 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="6" Grid.Row="0"  Width="160" Height="Auto" Command="{Binding CalculateDifferenceAndParagraphsCommand}" Content="Show diff" FontSize ="15" Grid.ColumnSpan="2"/>
-                    <Button Grid.Column="7" Grid.Row="2" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
-                    <Button Grid.Column="6" Grid.Row="2" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
+                    <Button Grid.Column="7" Grid.Row="2" x:Name="nextPar" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
+                    <Button Grid.Column="6" Grid.Row="2" x:Name="prevPar" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
                     <Button Grid.Column="0" Grid.Row="0" Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
                     <Button Grid.Column="3" Grid.Row="0"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
-                    <FlowDocumentScrollViewer Grid.Column="0" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
+                    <FlowDocumentScrollViewer Grid.Column="0" x:Name="documentViwer" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -28,6 +28,17 @@ namespace WpfGuiView
                                                   new FolderDialogService(),
                                                   new FolderDialogService(),
                                                   new SaveFileDialogService());
+            prevPar.Click += new RoutedEventHandler(BringSelectedParagraphIntoView);
+            nextPar.Click += new RoutedEventHandler(BringSelectedParagraphIntoView);
+        }
+
+        private void BringSelectedParagraphIntoView(object sender, RoutedEventArgs e)
+        {
+            var vm = (ViewModel.ViewModel)mainWindow.DataContext;
+            var fvm = vm.FileVM;
+            var selectedIndex = fvm.SelectedChangeBlock.ID;
+            var paragraphNumber = fvm.ParagraphView.ChangeBlocksPositions[selectedIndex];
+            documentViwer.Document.Blocks.ElementAt(paragraphNumber).BringIntoView();
         }
     }
 }

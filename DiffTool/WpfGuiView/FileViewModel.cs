@@ -12,9 +12,9 @@ namespace WpfGuiView.ViewModel
     public class FileViewModel : INotifyPropertyChanged
     {
         private bool _showFiles;
-        private FileParagraphView _paragraphView;
         private FileDifferenceModel _diff;
         private int _selectedIndex;
+
         private readonly IDialogService _selectFile1;
         private readonly IDialogService _selectFile2;
         private readonly IDialogService _saveFile;
@@ -23,6 +23,8 @@ namespace WpfGuiView.ViewModel
         private string _path1;
         private string _path2;
 
+
+        private FileParagraphView _paragraphView;
         public FileParagraphView ParagraphView => _paragraphView;
         public string Path1 
         {
@@ -131,6 +133,7 @@ namespace WpfGuiView.ViewModel
                                                                             OnPropertyChanged("SelectedChangeBlock");
                                                                             OnPropertyChanged("ParagraphView");
                                                                         });
+
         public FileViewModel(IDialogService dialogService1, IDialogService dialogService2, IDialogService saveDialogService)
         {
             _path1 = null;
