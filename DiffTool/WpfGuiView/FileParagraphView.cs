@@ -25,15 +25,17 @@ namespace WpfGuiView
 			_doc.FontWeight = FontWeights.Light;
 			_changeBlocksPositions = new List<int>();
 			var curParagraphNumber = 0;
-			using (var reader = new OneWayReader(diff.Path1))
+			using (var reader = new OneWayReader(diff.Path2))
 			{
 				foreach (var cb in changeBlockViews)
                 {
 					var isMarked = false;
 
-					if (cb.StartPos1 > curPos)
+					if (cb.StartPos2 > curPos)
 					{
-						var buffer = reader.LineRange(curPos, cb.StartPos1);
+						var buffer = reader.LineRange(curPos, cb.StartPos2);
+						for (var i = curPos; i < cb.StartPos2; i++)
+							buffer[i - curPos] = $"{i}.    {buffer[i - curPos]}";
 						var text = String.Join('\n', buffer);
 						_doc.Blocks.Add(new Paragraph(new Run(text)));
 						curParagraphNumber++;

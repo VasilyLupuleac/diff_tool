@@ -31,21 +31,14 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <ListView Grid.Column="6" Grid.Row="3" Margin="20" Grid.ColumnSpan="2" Grid.RowSpan="5"
-                 ItemsSource="{Binding ChangeBlocks,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                 SelectedItem="{Binding SelectedChangeBlock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
 
-                    </ListView>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Deleted" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="26"/>
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="Inserted" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="26"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Path=SelectedChangeBlock.Delete}" Background="PaleVioletRed" Grid.ColumnSpan="3" Grid.RowSpan="5"/>
-                    <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Path=SelectedChangeBlock.Insert}"  Background="LightGreen"  Grid.ColumnSpan="3" Grid.RowSpan="5"/>
-                    <Button Grid.Column="6" Grid.Row="0" x:Name="calculate"  Width="160" Height="Auto" Command="{Binding CalculateDifferenceCommand}" Content="Show diff" FontSize ="15" Grid.ColumnSpan="2"/>
-                    <Button Grid.Column="7" Grid.Row="2" x:Name="next" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
-                    <Button Grid.Column="6" Grid.Row="2" x:Name="prev" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
-                    <Button Grid.Column="0" Grid.Row="0" x:Name="button1"  Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
-                    <Button Grid.Column="3" Grid.Row="0" x:Name="button2"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
-                    <Button Grid.Column="0" Grid.Row="8" x:Name="save"  Width="Auto" Height="30" Command="{Binding SaveFileDialogCommand}" Content="Save difference" />
+                    <Button Grid.Column="6" Grid.Row="0"  Width="160" Height="Auto" Command="{Binding CalculateDifferenceAndParagraphsCommand}" Content="Show diff" FontSize ="15" Grid.ColumnSpan="2"/>
+                    <Button Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="3" x:Name="nextPar" Width="100" Height="Auto" Command="{Binding NextCommand}" FontFamily="Marlett" FontSize="60" Content="6"/>
+                    <Button Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="2" x:Name="prevPar" Width="100" Height="Auto" Command="{Binding PrevCommand}" FontFamily="Marlett" FontSize="60" Content="5"/>
+                    <Button Grid.Column="0" Grid.Row="0" Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
+                    <Button Grid.Column="3" Grid.Row="0"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
+                    <Button Grid.Column="7" Grid.Row="8" x:Name="save"  Width="Auto" Height="30" Command="{Binding SaveFileDialogCommand}" Content="Save difference" />
+                    <FlowDocumentScrollViewer Grid.Column="0" x:Name="documentViwer" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="2" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Compare directories">
@@ -127,37 +120,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Compare files">
-                <Grid DataContext="{Binding Path=FileVM}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="6" Grid.Row="0"  Width="160" Height="Auto" Command="{Binding CalculateDifferenceAndParagraphsCommand}" Content="Show diff" FontSize ="15" Grid.ColumnSpan="2"/>
-                    <Button Grid.Column="7" Grid.Row="2" x:Name="nextPar" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
-                    <Button Grid.Column="6" Grid.Row="2" x:Name="prevPar" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
-                    <Button Grid.Column="0" Grid.Row="0" Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
-                    <Button Grid.Column="3" Grid.Row="0"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
-                    <FlowDocumentScrollViewer Grid.Column="0" x:Name="documentViwer" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="2" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
-                </Grid>
-            </TabItem>
+           
         </TabControl>
     </Grid>
 

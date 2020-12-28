@@ -27,9 +27,9 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Button Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="3" x:Name="nextPar" Width="100" Height="Auto" Command="{Binding NextCommand}" FontFamily="Marlett" FontSize="60" Content="6"/>
+        <Button Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="2" x:Name="prevPar" Width="100" Height="Auto" Command="{Binding PrevCommand}" FontFamily="Marlett" FontSize="60" Content="5"/>
 
-        <Button Grid.Column="7" Grid.Row="2" x:Name="nextPar" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
-        <Button Grid.Column="6" Grid.Row="2" x:Name="prevPar" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
         <Label Grid.Column="0" Grid.Row="0" Width="Auto" Height="30" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
         <Label Grid.Column="3" Grid.Row="0"  Width="Auto" Height="30" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
         <FlowDocumentScrollViewer Grid.Column="0" x:Name="documentViwer" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="2" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
