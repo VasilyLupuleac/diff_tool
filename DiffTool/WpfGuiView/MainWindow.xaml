@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfGuiView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Diff Tool" Height="450" Width="800">
     <Grid>
         <TabControl>
             <TabItem Header="Compare files">
@@ -70,8 +70,13 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TreeView Grid.Row="2" Grid.Column="2"  Grid.ColumnSpan="5" Grid.RowSpan="5" ItemsSource="{Binding Node, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-
+                    <TreeView Grid.Row="2" Grid.Column="2" x:Name="tree" Grid.ColumnSpan="5" Grid.RowSpan="5" ItemsSource="{Binding Node, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}">
+                                <EventSetter Event="MouseDoubleClick"
+                                Handler="OpenFileDifference"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                 <StackPanel Orientation="Horizontal">
@@ -150,7 +155,7 @@
                     <Button Grid.Column="6" Grid.Row="2" x:Name="prevPar" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
                     <Button Grid.Column="0" Grid.Row="0" Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
                     <Button Grid.Column="3" Grid.Row="0"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
-                    <FlowDocumentScrollViewer Grid.Column="0" x:Name="documentViwer" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
+                    <FlowDocumentScrollViewer Grid.Column="0" x:Name="documentViwer" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="2" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
                 </Grid>
             </TabItem>
         </TabControl>

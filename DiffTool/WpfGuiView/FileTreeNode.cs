@@ -28,6 +28,18 @@ namespace WpfGuiView.ViewModel
 		public string ValidPath => Path1 ?? Path2;
 		public NodeType Type { get; private set; }
 
+		private FileDifferenceModel _diff;
+		public FileDifferenceModel Diff
+		{
+            get
+            {
+				if (Type == NodeType.ChangedFile)
+					return _diff;
+				else
+					return null;
+            }
+		}
+
 		private IEnumerable<string> getDirNames()
         {
 			var dir = new DirectoryInfo(ValidPath);
@@ -64,6 +76,7 @@ namespace WpfGuiView.ViewModel
 		{
 			Path1 = diff.Path1;
 			Path2 = diff.Path2;
+			_diff = diff;
 			Name = Path1.Substring(Path1.LastIndexOf('\\') + 1);
 			Type = NodeType.ChangedFile;
 			Children = new ObservableCollection<FileTreeNode>();

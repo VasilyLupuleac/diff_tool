@@ -4,6 +4,7 @@ using Model;
 using System.Windows.Documents;
 using System.Linq;
 using System.Windows.Media;
+using System.Windows;
 
 namespace WpfGuiView
 {
@@ -20,6 +21,8 @@ namespace WpfGuiView
 			var changeBlockViews = diff.ChangeBlocks.Select(cb => new ChangeBlockParagraphView(cb));
 			var curPos = 0;
 			_doc = new FlowDocument();
+			_doc.FontFamily = new FontFamily("Pericles Light");
+			_doc.FontWeight = FontWeights.Light;
 			_changeBlocksPositions = new List<int>();
 			var curParagraphNumber = 0;
 			using (var reader = new OneWayReader(diff.Path1))

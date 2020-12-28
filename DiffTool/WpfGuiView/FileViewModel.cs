@@ -11,13 +11,16 @@ namespace WpfGuiView.ViewModel
 {
     public class FileViewModel : INotifyPropertyChanged
     {
-        private bool _showFiles;
         private FileDifferenceModel _diff;
         private int _selectedIndex;
+        private int _changeBlocksNum;
+        private List<ChangeBlockView> _changeBlocks;
 
         private readonly IDialogService _selectFile1;
         private readonly IDialogService _selectFile2;
         private readonly IDialogService _saveFile;
+
+        public IDialogService SaveFileService => _saveFile;
 
 
         private string _path1;
@@ -26,13 +29,15 @@ namespace WpfGuiView.ViewModel
 
         private FileParagraphView _paragraphView;
         public FileParagraphView ParagraphView => _paragraphView;
-        public string Path1 
+
+        public int ChangeBlocksNum => _changeBlocksNum;
+        public string Path1
         {
             get
             {
                 return _path1 ?? "Select file";
             }
-            set 
+            set
             {
                 _path1 = value;
                 OnPropertyChanged("Path1");
@@ -55,12 +60,15 @@ namespace WpfGuiView.ViewModel
         {
             get
             {
+                if (!(_changeBlocks is null))
+                    return _changeBlocks;
                 var list = new List<ChangeBlockView>();
                 if (_diff is null)
                     return list;
-                for (int i = 0; i < _diff.ChangeBlocks.Count(); i++)
+                for (int i = 0; i < _changeBlocksNum; i++)
                     list.Add(new ChangeBlockView(_diff.ChangeBlocks[i], i));
-                return list;
+                _changeBlocks =  list;
+                return _changeBlocks;
             }
         }
 
@@ -70,14 +78,15 @@ namespace WpfGuiView.ViewModel
             {
                 if (_diff is null)
                     return null;
-                try {
+                try
+                {
                     return ChangeBlocks[_selectedIndex];
                 }
-                catch(ArgumentOutOfRangeException _)
+                catch (ArgumentOutOfRangeException _)
                 {
                     return null;
                 }
-                
+
             }
             set
             {
@@ -96,43 +105,45 @@ namespace WpfGuiView.ViewModel
 
         public ICommand SaveFileDialogCommand => new RelayCommand(_ => { _diff.Save(_saveFile.OpenDialog()); });
 
-        public ICommand NextCommand => new RelayCommand(_ => 
+        public ICommand NextCommand => new RelayCommand(_ =>
         {
             if (_diff is null || ChangeBlocks.Count() == 0)
                 return;
-             _selectedIndex = (_selectedIndex + 1) % _diff.ChangeBlocks.Count;
-            OnPropertyChanged("SelectedChangeBlock"); 
-         });
+            _selectedIndex = (_selectedIndex + 1) % _changeBlocksNum;
+            OnPropertyChanged("SelectedChangeBlock");
+        });
 
         public ICommand PrevCommand => new RelayCommand(_ =>
         {
             if (_diff is null || ChangeBlocks.Count() == 0)
                 return;
             if (_selectedIndex == 0)
-                _selectedIndex = _diff.ChangeBlocks.Count;
+                _selectedIndex = _changeBlocksNum;
             _selectedIndex--;
             OnPropertyChanged("SelectedChangeBlock");
         });
 
         public ICommand CalculateDifferenceCommand => new RelayCommand(_ =>
-                                                                        {
-                                                                            if (_path1 is null || _path2 is null)
-                                                                                return;
-                                                                            _diff = new FileDifferenceModel(Path1, Path2);
-                                                                            OnPropertyChanged("ChangeBlocks");
-                                                                            OnPropertyChanged("SelectedChangeBlock");
-                                                                        });
+        {
+            if (_path1 is null || _path2 is null)
+                return;
+            _diff = new FileDifferenceModel(Path1, Path2);
+            OnPropertyChanged("ChangeBlocks");
+            OnPropertyChanged("SelectedChangeBlock");
+        });
 
         public ICommand CalculateDifferenceAndParagraphsCommand => new RelayCommand(_ =>
-                                                                        {
-                                                                            if (_path1 is null || _path2 is null)
-                                                                                return;
-                                                                            _diff = new FileDifferenceModel(Path1, Path2);
-                                                                            _paragraphView = new FileParagraphView(_diff);
-                                                                            OnPropertyChanged("ChangeBlocks");
-                                                                            OnPropertyChanged("SelectedChangeBlock");
-                                                                            OnPropertyChanged("ParagraphView");
-                                                                        });
+        {
+            if (_path1 is null || _path2 is null)
+                return;
+            _diff = new FileDifferenceModel(Path1, Path2);
+            _paragraphView = new FileParagraphView(_diff);
+            _changeBlocks = null;
+            _changeBlocksNum = _diff.ChangeBlocks.Count;
+            OnPropertyChanged("ChangeBlocks");
+            OnPropertyChanged("SelectedChangeBlock");
+            OnPropertyChanged("ParagraphView");
+        });
 
         public FileViewModel(IDialogService dialogService1, IDialogService dialogService2, IDialogService saveDialogService)
         {
@@ -142,6 +153,22 @@ namespace WpfGuiView.ViewModel
             _selectFile2 = dialogService2;
             _saveFile = saveDialogService;
             _selectedIndex = 0;
+            _changeBlocksNum = 0;
+            _changeBlocks = new List<ChangeBlockView>();
+        }
+
+        public FileViewModel(FileDifferenceModel diff, IDialogService dialogService1, IDialogService dialogService2, IDialogService saveDialogService)
+        {
+            _path1 = diff.Path2;
+            _path2 = diff.Path1;
+            _diff = diff;
+            _selectFile1 = dialogService1;
+            _selectFile2 = dialogService2;
+            _saveFile = saveDialogService;
+            _selectedIndex = 0;
+            _changeBlocksNum = diff.ChangeBlocks.Count;
+            _changeBlocks = null;
+            _paragraphView = new FileParagraphView(_diff);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

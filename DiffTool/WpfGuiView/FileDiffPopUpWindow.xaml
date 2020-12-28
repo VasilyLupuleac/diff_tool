@@ -7,115 +7,31 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TabControl>
-            <TabItem Header="Compare files">
-                <Grid DataContext="{Binding Path=FileVM}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <ListView Grid.Column="6" Grid.Row="3" Margin="20" Grid.ColumnSpan="2" Grid.RowSpan="5"
-                 ItemsSource="{Binding ChangeBlocks,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                 SelectedItem="{Binding SelectedChangeBlock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-                    </ListView>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Deleted" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="26"/>
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="Inserted" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="26"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Path=SelectedChangeBlock.Delete}" Background="PaleVioletRed" Grid.ColumnSpan="3" Grid.RowSpan="5"/>
-                    <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Path=SelectedChangeBlock.Insert}"  Background="LightGreen"  Grid.ColumnSpan="3" Grid.RowSpan="5"/>
-                    <Button Grid.Column="6" Grid.Row="0" x:Name="calculate"  Width="160" Height="Auto" Command="{Binding CalculateDifferenceCommand}" Content="Show diff" FontSize ="15" Grid.ColumnSpan="2"/>
-                    <Button Grid.Column="7" Grid.Row="2" x:Name="next" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
-                    <Button Grid.Column="6" Grid.Row="2" x:Name="prev" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
-                    <Button Grid.Column="0" Grid.Row="0" x:Name="button1"  Width="Auto" Height="30" Command="{Binding OpenFileDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
-                    <Button Grid.Column="3" Grid.Row="0" x:Name="button2"  Width="Auto" Height="30" Command="{Binding OpenFileDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Compare directories" HorizontalAlignment="Left" Margin="-2,-2,0,0" Width="123">
-                <Grid DataContext ="{Binding DirVM}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TreeView Grid.Row="2" Grid.Column="2"  Grid.ColumnSpan="5" Grid.RowSpan="5" ItemsSource="{Binding Node, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="icons/folder.png"/>
-                                    <TextBlock x:Name="nodeName" Text="{Binding Name}" FontSize="15" Margin="0,1,8,1"/>
-                                </StackPanel>
-
-                                <HierarchicalDataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding Type}" Value="DeletedDir">
-                                        <Setter TargetName="nodeName" Property="Background" Value="PaleVioletRed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="DeletedFile">
-                                        <Setter TargetName="nodeName" Property="Background" Value="PaleVioletRed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="ChangedFile">
-                                        <Setter TargetName="nodeName" Property="Background" Value="Yellow" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="ChangedDir">
-                                        <Setter TargetName="nodeName" Property="Background" Value="Yellow" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="AddedDir">
-                                        <Setter TargetName="nodeName" Property="Background" Value="LightGreen" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="AddedFile">
-                                        <Setter TargetName="nodeName" Property="Background" Value="LightGreen" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="UnchangedFile">
-                                        <Setter TargetName="nodeName" Property="Background" Value="LightGray" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Type}" Value="UnchangedDir">
-                                        <Setter TargetName="nodeName" Property="Background" Value="LightGray" />
-                                    </DataTrigger>
-                                </HierarchicalDataTemplate.Triggers>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                    <Button Grid.Column="6" Grid.Row="0"  Width="160" Height="Auto" Command="{Binding CalculateDifferenceCommand}" Content="Show diff" FontSize ="15" Grid.ColumnSpan="2"/>
-                    <Button Grid.Column="0" Grid.Row="0"  Width="Auto" Height="30" Command="{Binding OpenFolderDialog1Command}" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
-                    <Button Grid.Column="3" Grid.Row="0" Width="Auto" Height="30" Command="{Binding OpenFolderDialog2Command}" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
-
-                </Grid>
-            </TabItem>
-            <TabItem>
-                <Image Source="icons/folder.png" Height="100"/>
-            </TabItem>
-        </TabControl>
+        <Button Grid.Column="7" Grid.Row="2" x:Name="nextPar" Width="80" Height="Auto" Command="{Binding NextCommand}" Content="Next" FontSize ="26"/>
+        <Button Grid.Column="6" Grid.Row="2" x:Name="prevPar" Width="80" Height="Auto" Command="{Binding PrevCommand}" Content="Prev" FontSize ="26"/>
+        <Label Grid.Column="0" Grid.Row="0" Width="Auto" Height="30" Content="{Binding Path1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Grid.ColumnSpan="3"/>
+        <Label Grid.Column="3" Grid.Row="0"  Width="Auto" Height="30" Content="{Binding Path2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="3"/>
+        <FlowDocumentScrollViewer Grid.Column="0" x:Name="documentViwer" Grid.Row="1" Document="{Binding Path=ParagraphView.Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black" BorderThickness="2" Grid.ColumnSpan="6" Grid.RowSpan="7"/>
     </Grid>
-
 </Window>
