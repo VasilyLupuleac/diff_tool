@@ -8,8 +8,8 @@ namespace WpfGuiView
 	{
 		private readonly ChangeBlock _changeBlock;
 		public readonly int ID;
-		public int StartPos1 => _changeBlock.StartPos1 + 1;
-		public int StartPos2 => _changeBlock.StartPos2 + 1;
+		public int StartPos1 => _changeBlock.StartPos1;
+		public int StartPos2 => _changeBlock.StartPos2;
 		public int EndPos1 => _changeBlock.EndPos1;
 		public int EndPos2 => _changeBlock.EndPos2;
 

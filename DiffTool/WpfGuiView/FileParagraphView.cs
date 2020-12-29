@@ -31,11 +31,11 @@ namespace WpfGuiView
                 {
 					var isMarked = false;
 
-					if (cb.StartPos2 > curPos)
+					if (cb.StartPos2 > 0)
 					{
-						var buffer = reader.LineRange(curPos, cb.StartPos2);
-						for (var i = curPos; i < cb.StartPos2; i++)
-							buffer[i - curPos] = $"{i}.    {buffer[i - curPos]}";
+						var buffer = reader.LineRange(curPos, cb.StartPos2 - 1);
+						for (var i = 0; i < cb.StartPos2 - curPos - 1; i++)
+							buffer[i] = $"{i + 1 + curPos}.    {buffer[i]}";
 						var text = String.Join('\n', buffer);
 						_doc.Blocks.Add(new Paragraph(new Run(text)));
 						curParagraphNumber++;
@@ -54,7 +54,7 @@ namespace WpfGuiView
 							_changeBlocksPositions.Add(curParagraphNumber);
 						curParagraphNumber++;
 					}
-					curPos = cb.EndPos1;
+					curPos = cb.EndPos2;
                 }
 				var endLines = reader.ReadToEnd(changeBlockViews.Last().EndPos1);
 				if (endLines.Length > 0)
